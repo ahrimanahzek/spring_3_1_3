@@ -40,7 +40,7 @@ public class RestController {
     }
 
     @DeleteMapping("/users/{id}")
-    public String deleteEmployee(@PathVariable long id) {
+    public String deleteUser(@PathVariable long id) {
         userService.delete(id);
         return "User with ID = " + id + " was deleted";
     }
