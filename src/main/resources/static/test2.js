@@ -5,6 +5,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (msg) {
 
+                // сначала сформируем таблицу в виде строки текста затем этот текст вставим непосредственно в страницу
                 let userText = '';
 
                 // заполним таблицу
@@ -28,12 +29,12 @@ $(document).ready(function () {
                 msg.forEach(function (el) {
                     let buttonEdit = document.getElementById("edit" + el.id);
 
+                    // при открытии модальной формы редактирования заполняем ее поля
                     function handleButtonEditClick () {
-                        //alert("Вы нажали на кнопку " + el.id);
 
                         $.ajax("/api/users/" + el.id, {
                             method: "GET",
-                            data: {id: $(this).attr("value")}, //в rest-контроллер будет передан id=1 (см. value из тэга button выше)
+                            data: {id: $(this).attr("value")},
                             dataType: "json",
                                 success: function (msg) {
                                     $("#editModalFieldID").attr("value", msg.id);
@@ -43,10 +44,10 @@ $(document).ready(function () {
                                     $("#editModalEmail").attr("value", msg.email);
                                     $("#editModalPassword").attr("value", msg.password);
 
-                                    // получим все роли и заполним поля option
+                                    // получим все роли из базы и выведем их в поля option
                                     $.ajax("/api/roles", {
                                         method: "GET",
-                                        data: {}, //в rest-контроллер будет передан id=1 (см. value из тэга button выше)
+                                        data: {},
                                         dataType: "json",
                                         success: function (msg) {
 
@@ -74,17 +75,13 @@ $(document).ready(function () {
                 let buttonDelete = document.getElementById("delete" + el.id );
 
                 function handleButtonDeleteClick () {
-                    //alert("Вы нажали на кнопку " + el.id);
 
                     $.ajax("/api/users/" + $(this).attr("value"), {
                         method: "DELETE",
-                        data: {id: $(this).attr("value")}, //в rest-контроллер будет передан id=1 (см. value из тэга button выше)
+                        data: {id: $(this).attr("value")},
                         dataType: "text",
                         success: function (msg) {
                             refreshUserTable();
-/*                            $("#users")
-                                .find("#" + msg) //ищем div с id=1
-                                .remove();*/
                         }
 
                     })
@@ -98,30 +95,15 @@ $(document).ready(function () {
         })
     }
 
+    // ВЫВОДИМ ТАБЛИЦУ НА ФОРМУ
     refreshUserTable();
 
-
+    // КНОПКА EDIT В МОДАЛЬНОЙ ФОРМЕ РЕДАКТИРОВАНИЯ ПОЛЬЗОВАТЕЛЯ
     let buttonEditFinish = document.getElementById("editFinish");
 
     function handleButtonDeleteClick () {
 
-/*            let rolesJsonString = "[";
-            for (var i=0; i < $('#editModalRoles')[0].options.length; i++)
-            {
-                if ($('#editModalRoles')[0].options[i].selected) {
 
-                    if(rolesJsonString.length > 1) {
-                        rolesJsonString = rolesJsonString + ", "
-                    }
-
-                        rolesJsonString = rolesJsonString + "{id: " + $('#editModalRoles')[0].options[i].value
-                        + ", role: "+ $('#editModalRoles')[0].options[i].text + "}"
-
-                }
-            }
-            rolesJsonString = rolesJsonString + "]";*/
-
-        //alert("Вы нажали на кнопку " + el.id);
         let editedUser = {
             id:  $("#editModalFieldID")[0].value,
             firstName: $("#editModalFieldName")[0].value,
@@ -138,13 +120,6 @@ $(document).ready(function () {
 
                 editedUser["roles"].push({id: $('#editModalRoles')[0].options[i].value, role: $('#editModalRoles')[0].options[i].text})
 
-/*                if(rolesJsonString.length > 1) {
-                    rolesJsonString = rolesJsonString + ", "
-                }
-
-                rolesJsonString = rolesJsonString + "{id: " + $('#editModalRoles')[0].options[i].value
-                    + ", role: "+ $('#editModalRoles')[0].options[i].text + "}"*/
-
             }
         }
 
@@ -152,14 +127,13 @@ $(document).ready(function () {
         let a = 1;
         $.ajax("/api/users/", {
             method: "PUT",
-            data: jsonUser, //в rest-контроллер будет передан id=1 (см. value из тэга button выше)
+            data: jsonUser,
             contentType: 'application/json',
             dataType: "JSON",
             success: function (msg) {
                 refreshUserTable();
-                /*                            $("#users")
-                                                .find("#" + msg) //ищем div с id=1
-                                                .remove();*/
+
+                // скроем модальную форму если все прошло успешно
               $('#editModal').hide();
             }
 
@@ -167,12 +141,12 @@ $(document).ready(function () {
 
     }
 
+    // КНОПКА ДОБАВЛЕНИЯ НОВОГО ПОЛЬЗОВАТЕЛЯ
     buttonEditFinish.onclick = handleButtonDeleteClick;
 
     let buttonAddNewUser = document.getElementById("addNewUser");
 
     function handleButtonAddNewUserClick () {
-        //alert("Вы нажали на кнопку " + el.id);
 
         let newUser = {
             firstName: $("#addUserFirstName")[0].value,
@@ -192,19 +166,13 @@ $(document).ready(function () {
             }
         }
 
-        let jsonUser = JSON.stringify(newUser);
-        let a = 1;
         $.ajax("/api/users/", {
             method: "POST",
-            data: jsonUser, //в rest-контроллер будет передан id=1 (см. value из тэга button выше)
+            data: JSON.stringify(newUser),
             contentType: 'application/json',
             dataType: "JSON",
             success: function (msg) {
                 refreshUserTable();
-                /*                            $("#users")
-                                                .find("#" + msg) //ищем div с id=1
-                                                .remove();*/
-               // $('#editModal').hide();
             }
 
         })
@@ -213,23 +181,4 @@ $(document).ready(function () {
 
     buttonAddNewUser.onclick = handleButtonAddNewUserClick;
 
-   /* var button = getElementById("delete");*/
-
-/*    const buttonDelete = $("#delete");
-    buttonDelete.click(
-        alert(1)
-/!*        function () {
-            $.ajax("/api/users", {
-                method: "DELETE",
-                data: {id: $(this).attr("value")}, //в rest-контроллер будет передан id=1 (см. value из тэга button выше)
-                dataType: "text",
-                success: function (msg) {
-                    $("#users")
-                        .find("#" + msg) //ищем div с id=1
-                        .remove();
-
-                }
-            })
-        }*!/
-    )*/
 })
