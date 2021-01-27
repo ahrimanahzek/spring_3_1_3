@@ -83,12 +83,116 @@
 
                             <!-- Обходим список пользователей который получили из контроллера" -->
 
+                            <td>
+                                <button type="button" class="btn btn-info" data-toggle="modal" id = "buttonModal">
+                                    Edit
+                                </button>
+
+                            </td>
+
                             </tbody>
 
                         </table>
                     </div>
 
 
+                </div>
+
+                <div class="modal fade" id="editModal"
+                     tabindex="-1"
+                     role="dialog" aria-labelledby="editModalTitle"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="editModalTitle">Edit
+                                    user</h4>
+                                <button class="close" data-dismiss="modal">x
+                                </button>
+                            </div>
+                            <form>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-3"></div>
+                                        <div class="col-6">
+                                            <div class="text-center">
+                                                <label><strong>ID</strong></label><br>
+                                                <input type="text"
+                                                       value=""
+                                                       class="form-control"
+                                                       id="editModalFieldID"
+                                                       name="id" readonly>
+                                            </div>
+                                            <div class="text-center">
+                                                <label><strong>Name</strong></label><br>
+                                                <input type="text"
+                                                       value=""
+                                                       class="form-control"
+                                                       id="editModalFieldName"
+                                                       name="firstName">
+                                            </div>
+                                            <div class="text-center">
+                                                <label><strong>Surname</strong></label><br>
+                                                <input type="text"
+                                                       value=""
+                                                       class="form-control"
+                                                       id="editModalFieldLastName"
+                                                       name="lastName">
+                                            </div>
+                                            <div class="text-center">
+                                                <label><strong>Age</strong></label><br>
+                                                <input type="number"
+                                                       value=""
+                                                       class="form-control"
+                                                       id="editModalFieldAge"
+                                                       name="age">
+                                            </div>
+                                            <div class="text-center">
+                                                <label><strong>Email</strong></label><br>
+                                                <input type="text"
+                                                       value=""
+                                                       class="form-control"
+                                                       id="editModalEmail"
+                                                       name="email">
+                                            </div>
+                                            <div class="text-center">
+                                                <label><strong>Password</strong></label><br>
+                                                <input type="password"
+                                                       value=""
+                                                       class="form-control"
+                                                       id="editModalPassword"
+                                                       name="password">
+                                            </div>
+                                            <div class="text-center">
+                                                <label><strong>Roles</strong></label><br>
+                                                <select class="custom-select"
+                                                        multiple
+                                                        size="2"
+                                                        value=""
+                                                        id="editModalRoles"
+                                                        name="roles"
+                                                        required>
+                                                    <!--<div id="editModalRoles"><option value="1">ADMIN</option>
+                                                        <option value="2">USER</option></div>
+                                                    <option th:each="currRole : ${allRoles}"
+                                                            th:value="${currRole.getId()}"
+                                                            th:utext="${currRole.getRole()}">
+                                                    </option>-->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3"></div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary"
+                                            data-dismiss="modal">Close
+                                    </button>
+                                    <button class="btn btn-info" id="editFinish">Edit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Страница создания нового пользователя -->
@@ -98,44 +202,50 @@
                     </div>
                     <div class="card-body row justify-content-center align-items-center">
                         <div class="col-5 text-center">
-                            <form th:method="POST" th:action="@{/user/admin/}" th:object="${newUser}">
+                            <form>
 
                                 <div class="text-center">
                                     <label><strong>Name</strong></label><br>
                                     <input type="text"
                                            class="form-control"
-                                           th:name="firstName">
+                                           name="firstName"
+                                           id="addUserFirstName">
                                 </div>
                                 <div class="text-center">
                                     <label><strong>Surname</strong></label><br>
                                     <input type="text"
                                            class="form-control"
-                                           th:name="lastName">
+                                           name="lastName"
+                                           id="addUserLastName">
                                 </div>
                                 <div class="text-center">
                                     <label><strong>Age</strong></label><br>
                                     <input type="number"
                                            class="form-control"
-                                           th:name="age">
+                                           name="age"
+                                           id="addUserAge">
                                 </div>
                                 <div class="text-center">
                                     <label><strong>Email</strong></label><br>
                                     <input type="text"
                                            class="form-control"
-                                           th:name="email">
+                                           name="email"
+                                           id="addUserEmail">
                                 </div>
                                 <div class="text-center">
                                     <label><strong>Password</strong></label><br>
                                     <input type="password"
                                            class="form-control"
-                                           th:name="password">
+                                           name="password"
+                                           id="addUserPassword">
                                 </div>
                                 <div class="text-center">
                                     <label><strong>Roles</strong></label><br>
                                     <select class="custom-select"
                                             multiple
                                             size="2"
-                                            th:name="roles"
+                                            name="roles"
+                                            id="addUserRoles"
                                             required>
                                         <option th:each="currRole : ${allRoles}"
                                                 th:value="${currRole.getId()}"
@@ -144,7 +254,7 @@
                                     </select>
                                 </div>
                                 <br>
-                                <button class="btn btn-success">Add new user</button>
+                                <button class="btn btn-success" id="addNewUser">Add new user</button>
 
                             </form>
                         </div>

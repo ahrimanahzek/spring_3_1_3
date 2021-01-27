@@ -1,6 +1,8 @@
 package com.example.demo.rest;
 
+import com.example.demo.models.Role;
 import com.example.demo.models.User;
+import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,19 @@ public class RestController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RoleService roleService;
+
     @GetMapping("/users")
     public List<User> showAllUsers() {
         List<User> allUsers = userService.index();
         return allUsers;
+    }
+
+    @GetMapping("/roles")
+    public List<Role> showAllRoles() {
+        List<Role> allRoles = roleService.getAllRoles();
+        return allRoles;
     }
 
     @GetMapping("/users/{id}")
